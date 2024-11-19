@@ -52,7 +52,6 @@ create_temp_credentials_file()
 # os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = json.dumps(test)
 
 
-# os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "firstsource-vertex-b599392a0b78 2.json"
 
 def get_access_token():
     """Obtain an access token for the service account."""
