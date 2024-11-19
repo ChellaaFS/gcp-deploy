@@ -76,7 +76,7 @@ def list_buckets():
         buckets = response.json().get("items", [])
         return [bucket["name"] for bucket in buckets]
     else:
-        raise HTTPException(status_code=response.status_code, detail=f"Failed to list buckets: {response.text}")
+        return "Failed to list buckets"
 
 
 def gcp_create_bucket(bucket_name: str, location: str):
@@ -98,4 +98,4 @@ def gcp_create_bucket(bucket_name: str, location: str):
     if response.status_code == 200:
         return f"Bucket {bucket_name} created in {location}."
     else:
-        raise HTTPException(status_code=response.status_code, detail=f"Failed to create bucket: {response.text}")
+        return "Failed to create bucket"
