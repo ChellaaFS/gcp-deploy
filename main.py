@@ -1,8 +1,5 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-import os
-import requests
-import google.auth
 from google.auth.transport.requests import Request
 
 app = FastAPI()

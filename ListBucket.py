@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import HTTPException
 import os
 import requests
 import google.auth
@@ -8,7 +8,6 @@ from dotenv import load_dotenv
 import tempfile
 import json
 
-app = FastAPI()
 
 load_dotenv()
 
