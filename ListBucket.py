@@ -19,7 +19,7 @@ CLIENT_ID = os.getenv("CLIENT_ID")
 CLIENT_CERT = os.getenv("CLIENT_CERT")
 
 
-test = {
+credentials_json = {
   "type": "service_account",
   "project_id": "firstsource-vertex",
   "private_key_id": PRIVATE_KEY_ID,
@@ -34,26 +34,31 @@ test = {
 }
 
 
-def get_credentials():
-    creds_json_str =  json.dumps(test)
-    if creds_json_str is None:
-        raise ValueError("GOOGLE_APPLICATION_CREDENTIALS_JSON not found in environment")
- 
-    with tempfile.NamedTemporaryFile(mode="w+", delete=False, suffix=".json") as temp:
-        temp.write(creds_json_str) 
-        temp_filename = temp.name
- 
-    return temp_filename
+def create_temp_credentials_file():
+    creds_json_str = json.dumps(credentials_json) 
+
+    with tempfile.NamedTemporaryFile(mode="w+", delete=False, suffix=".json") as temp_file:
+        temp_file.write(creds_json_str)        
+        temp_filename = temp_file.name    
+             
+        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = temp_filename 
+    return temp_filename 
+
+# Call this function to create the temp file and set the environment variable 
+# 
+create_temp_credentials_file()
 
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"]= get_credentials()
+# os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = json.dumps(test)
 
 
 # os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "firstsource-vertex-b599392a0b78 2.json"
 
 def get_access_token():
     """Obtain an access token for the service account."""
-    credentials, project = google.auth.default(scopes=["https://www.googleapis.com/auth/cloud-platform"])
+    credentials, project = google.auth.load_credentials_from_file(
+        os.environ["GOOGLE_APPLICATION_CREDENTIALS"],
+        scopes=["https://www.googleapis.com/auth/cloud-platform"])
     credentials.refresh(Request())
     return credentials.token, project
 
